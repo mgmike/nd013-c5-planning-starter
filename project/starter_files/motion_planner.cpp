@@ -23,7 +23,7 @@ State MotionPlanner::get_goal_state_in_ego_frame(const State& ego_state,
      We are rotating by -ego_state "yaw" to ensure the ego vehicle's
      current yaw corresponds to theta = 0 in the new local frame.
 
-     Recall that the general rotation matrix around the Z axix is:
+     Recall that the general rotation matrix around the Z axis is:
      [cos(theta) -sin(theta)
      sin(theta)  cos(theta)]
   */
@@ -78,13 +78,13 @@ std::vector<State> MotionPlanner::generate_offset_goals(
   // a distance "_goal_offset".
   std::vector<State> goals_offset;
 
-  // the goals will be aligned on a perpendiclular line to the heading of the
+  // The goals will be aligned on a perpendiclular line to the heading of the
   // main goal. To get a perpendicular angle, just add 90 (or PI/2) to the main
   // goal heading.
 
-  // TODO-Perpendicular direction: ADD pi/2 to the goal yaw
+  // Perpendicular direction: ADD pi/2 to the goal yaw
   // (goal_state.rotation.yaw)
-  //auto yaw = ;  // <- Fix This
+  auto yaw = goal_state.rotation.yaw + M_PI_2;
 
   // LOG(INFO) << "MAIN GOAL";
   // LOG(INFO) << "x: " << goal_state.location.x << " y: " <<
@@ -104,13 +104,13 @@ std::vector<State> MotionPlanner::generate_offset_goals(
 
     // LOG(INFO) << "offset: " << offset;
 
-    // TODO-offset goal location: calculate the x and y position of the offset
+    // Offset goal location: calculate the x and y position of the offset
     // goals using "offset" (calculated above) and knowing that the goals should
     // lie on a perpendicular line to the direction (yaw) of the main goal. You
     // calculated this direction above (yaw_plus_90). HINT: use
     // std::cos(yaw_plus_90) and std::sin(yaw_plus_90)
-    // goal_offset.location.x += ;  // <- Fix This
-    // goal_offset.location.y += ;  // <- Fix This
+    goal_offset.location.x += offset * std::cos(yaw);
+    goal_offset.location.y += offset * std::sin(yaw);
     // LOG(INFO) << "x: " << goal_offset.location.x
     //          << " y: " << goal_offset.location.y
     //          << " z: " << goal_offset.location.z
@@ -211,13 +211,13 @@ std::vector<std::vector<PathPoint>> MotionPlanner::generate_spirals(
       std::vector<PathPoint>* spiral = new std::vector<PathPoint>;
       auto ok = _cubic_spiral.GetSampledSpiral(P_NUM_POINTS_IN_SPIRAL, spiral);
       if (ok && valid_spiral(*spiral, goal)) {
-        // LOG(INFO) << "Spiral Valid ";
+        LOG(INFO) << "Spiral Valid ";
         spirals.push_back(*spiral);
       } else {
-        // LOG(INFO) << "Spiral Invalid ";
+        LOG(INFO) << "Spiral Invalid ";
       }
     } else {
-      // LOG(INFO) << "Spiral Generation FAILED! ";
+      LOG(INFO) << "Spiral Generation FAILED! ";
     }
   }
   return spirals;
