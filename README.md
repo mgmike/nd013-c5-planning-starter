@@ -23,5 +23,11 @@ On the next iteration the vehicle will be in a stopped state so the goal is set 
 
 ## Cost Functions
 
+Circle Placement:
+In an ideal world, the vehcile can be represented as a full mesh model of itself. In the real world, that takes too much computation, so a few simple shapes are used, in this case, 3 circles centered at different points in the car are used to represent the space vehicles take up. For each circle, the center is calculated given an offeset and the position of the vehicle.
 
+Distance from circle to objects:
+For every other vehicle or object in the frame, the circles around it are also generated. A distance between each circle in each obsticle and each circle in the ego vehicle is generated and if the distance is smaller than the radius of each circle then the objects have collided.
 
+Distance between last point on spiral and main goal:
+Find the distance between the last point on the generated spiral and the given goal point. The cost will be greater if they are farther from each other.
