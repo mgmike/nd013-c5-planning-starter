@@ -31,6 +31,7 @@ from __future__ import print_function
 import glob
 import os
 import sys
+import time
 
 try:
     sys.path.append(glob.glob('../carla/dist/carla-*%d.%d-%s.egg' % (
@@ -786,7 +787,9 @@ def game_loop(args):
 
     try:
         client = carla.Client(args.host, args.port)
-        client.set_timeout(2.0)
+        client.set_timeout(4.0)
+        client.load_world('Town03')
+        time.sleep(1)
 
         display = pygame.display.set_mode(
             (args.width, args.height),

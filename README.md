@@ -71,15 +71,36 @@ Number of paths:
 I chose a reasonable 7 goal lines. I believe a smaller amount doesn't provide enough options, and a larger amount is not necessary. 
 
 Number of points:
-I experimented with 8, 15, and 28 points per line (ppl). I noticed that for the first obsacle, only 15 ppl were able to calculate a possible path.
+I experimented with 8, 16, 24, and 100 points per line (ppl). I noticed that 8 ppl produced strange visual timing issues where despite the speed being low, the vehicle would seem to accelerate to a stop then all of a sudden stop.
 
-![8 ppl cannot navigate around obstacle](Images/Planning_spiral_8_points1.gif)
+![8 ppl cannot navigate around obstacle](Images/Planning_spiral_8_points.gif)
 
-![15 ppl is able to navigate around the first obstacle](Images/Planning_spiral_15_points1.gif)
+Doubling the ppm eliminates the visual stopping issue. 
 
-![28 ppl is not able to navigate around obstacle](Images/Planning_spiral_28_points1.gif)
+![16 ppl is able to navigate around the first obstacle](Images/Planning_spiral_16_points.gif)
+
+I cant see a difference between 16 ppm and 24 ppm. There does not seem to be a large difference in performance either. Because of this I think 24 is a good ppm. 
+
+![24 ppl is not able to navigate around obstacle](Images/Planning_spiral_24_points.gif)
+
+The 24 ppm test hanles the stop light very well also.
+
+![24 ppl stop light](Images/Planning_spiral_24_point_light.gif)
  
-I also noticed that 8 points produced strange visual timing issues where despite the speed being low, the vehicle would seem to accelerate to a stop then all of a sudden stop.
+Just for fun, I increased the lookahead max value to 50m and the speed limit to 11m/s with the 24 ppm. Of course the code was not designed for these speeds so the ego vehicle's path to avoid other cars is very jerky, and it seems like the distance to stop is the same so the deceleration is very high.
 
-![Strange velocity timing error in 8 points per line when slowing down](Images/Planning_spiral_8_points2.gif)
+![High speeds](Images/High_speeds.gif)
 
+I also attempted a ppm of 100 with the increased speeds and did notice a decrease in performance. Similar to the 24 ppl high speed test, the vehicle's path is jerky and the deceleration is high. In the middle of the intersection, the path gets messed up.
+
+![100 ppl high speed](Images/Planning_spiral_100.gif)
+
+I included a summary of the metrics below.
+
+|              | Avg Server fps | Avg Client fps | Visual issues | Jerky Path |
+| ------------ | -------------- | -------------- | ------------- | ---------- |
+| 8 ppl        | 49             | 61             | Yes           | No         | 
+| 16 ppl       | 48             | 61             | No            | No         | 
+| 24 ppl       | 45             | 58             | No            | No         | 
+| 24 ppl Fast  | 46             | 59             | No            | Yes        | 
+| 100 ppl Fast | 42             | 42             | Yes           | Yes        | 
